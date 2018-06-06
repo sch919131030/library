@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sch.library.DAO.UserDao">
+    <insert id="insertUser" parameterType="string">
+        INSERT INTO
+        user_table(user_id)
+        VALUES (#{user_id})
+    </insert>
+    <select id="exists" resultType="int" parameterType="string" >
+        SELECT count(1)
+        FROM user_table
+        WHERE user_id = #{user_id}
+    </select>
+    <select id="selectUserInfo" resultType="UserDTO" parameterType="string">
+        SELECT *
+        FROM user_table
+        WHERE user_id = #{user_id}
+    </select>
+    <update id="setUserInfo">
+        IF category==1 THEN
+          UPDATE user_table
+          SET life_answer_number = life_answer_number + #{answer_number},
+          life_right_number = life_right_number + #{right_number}
+          WHERE user_id = #{user_id}
+        ELSEIF category==2 THEN
+          UPDATE user_table
+          SET literature_answer_number = literature_answer_number + #{answer_number},
+          literature_right_number = literature_right_number + #{right_number}
+          WHERE user_id = #{user_id}
+        ELSEIF category==3 THEN
+          UPDATE user_table
+          SET video_answer_number = video_answer_number + #{answer_number},
+          video_right_number = video_right_number + #{right_number}
+          WHERE user_id = #{user_id}
+        END IF
+    </update>
+    <update id="setUserInfo_life">
+        UPDATE user_table
+        SET life_answer_number = life_answer_number + #{answer_number},
+        life_right_number = life_right_number + #{right_number},
+        score = score + #{right_number}
+        WHERE user_id = #{user_id}
+    </update>
+    <update id="setUserInfo_literature">
+        UPDATE user_table
+        SET literature_answer_number = literature_answer_number + #{answer_number},
+        literature_right_number = literature_right_number + #{right_number},
+        score = score + #{right_number}
+        WHERE user_id = #{user_id}
+    </update>
+    <update id="setUserInfo_video">
+        IF category==1 THEN
+        UPDATE user_table
+        SET video_answer_number = video_answer_number + #{answer_number},
+        video_right_number = video_right_number + #{right_number},
+        score = score + #{right_number}
+        WHERE user_id = #{user_id}
+    </update>
+    <!--<select id="searchRank" parameterType="int">-->
+        <!--SELECT count(*)-->
+        <!--FROM user_table-->
+        <!--WHERE score > (SELECT score FROM user_table WHERE user_id = #{user_id})-->
+    <!--</select>-->
+    <select id="rightRate" resultType="double">
+        IF category==1 THEN
+          SELECT (life_right_number/life_answer_number)
+          FROM user_table
+          WHERE user_id = #{user_id}
+        ELSEIF category==2 THEN
+          SELECT (literature_right_number/literature_answer_number)
+          FROM user_table
+          WHERE user_id = #{user_id}
+        ELSEIF category==3 THEN
+          SELECT (video_right_number/video_answer_number)
+          FROM user_table
+          WHERE user_id = #{user_id}
+        END IF
+
+    </select>
+</mapper>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sch.library.DAO.QuestionDao">
+    <select id="exists_life" resultType="int" parameterType="int" >
+        SELECT count(1)
+        FROM life_table
+        WHERE id = #{id}
+    </select>
+    <select id="exists_literature" resultType="int" parameterType="int" >
+        SELECT count(1)
+        FROM literature_table
+        WHERE id = #{id}
+    </select>
+    <select id="exists_video" resultType="int" parameterType="int" >
+        SELECT count(1)
+        FROM video_table
+        WHERE id = #{id}
+    </select>
+    <select id="selectQuestion_category" resultType="QuestionDTO" parameterType="int">
+        IF #{question_category}==1 THEN
+          SELECT *
+          FROM life_table
+        ELSE #{question_category}==2 THEN
+          SELECT *
+          FROM literature_table
+        ELSE #{question_category}==3 THEN
+    </select>
+    <select id="selectQuestion_life" resultType="QuestionDTO">
+        SELECT *
+        FROM life_table
+    </select><select id="selectQuestion_literature" resultType="QuestionDTO">
+    SELECT *
+    FROM literature_table
+    </select>
+    <select id="selectQuestion_video" resultType="QuestionDTO">
+        SELECT *
+        FROM video_table
+    </select>
+    <select id="selectQuestion_life_id" resultType="QuestionDTO" parameterType="int">
+        SELECT *
+        FROM life_table
+        WHERE id = #{id}
+    </select><select id="selectQuestion_literature_id" resultType="QuestionDTO" parameterType="int">
+        SELECT *
+        FROM literature_table
+        WHERE id = #{id}
+    </select>
+    <select id="selectQuestion_video_id" resultType="QuestionDTO" parameterType="int">
+        SELECT *
+        FROM video_table
+        WHERE id = #{id}
+    </select>
+    <update id="setQuestionInfo_life" parameterType="int">
+        UPDATE life_table
+        SET difficulty = #{difficulty},
+        answer_number = answer_number+1,
+        right_number = #{right_number}
+        WHERE id = #{id}
+    </update>
+    <update id="setQuestionInfo_literature" parameterType="int">
+        UPDATE literature_table
+        SET difficulty = #{difficulty},
+        answer_number = answer_number+1,
+        right_number = #{right_number}
+        WHERE id = #{id}
+    </update>
+    <update id="setQuestionInfo_video" parameterType="int">
+        UPDATE video_table
+        SET difficulty = #{difficulty},
+        answer_number = answer_number+1,
+        right_number = #{right_number}
+        WHERE id = #{id}
+    </update>
+
+    <update id="setQuestionInfo" parameterType="int">
+        IF category==1 THEN
+          UPDATE life_table
+          SET answer_number = answer_number+#{number},
+          right_number = right_number+#{isRight}
+          WHERE id = #{id}
+        ELSEIF category==2 THEN
+          UPDATE literature_table
+          SET answer_number = answer_number+#{number},
+          right_number = right_number+#{isRight}
+          WHERE id = #{id}
+        ELSEIF category==3 THEN
+          UPDATE video_table
+          SET answer_number = answer_number+#{number},
+          right_number = right_number+#{isRight}
+          WHERE id = #{id}
+        END IF
+    </update>
+</mapper>

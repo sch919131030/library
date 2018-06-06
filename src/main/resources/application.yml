@@ -1,0 +1,17 @@
+server:
+ port: 8082
+ context-path: /library
+spring:
+ datasource:
+   driver-class-name: com.mysql.jdbc.Driver
+   url: jdbc:mysql://localhost:3306/Cultural_Square
+   username: root
+   password: 112345
+ jpa:
+   hibernate:
+     ddl-auto: create
+   show-sql: true
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.sch.library.DTO
+  config-location: classpath:config/mybatis-config.xml
